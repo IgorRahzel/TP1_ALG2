@@ -1,16 +1,21 @@
 from TrieTree import Node
 
 # create a new TrieTree object
-root = Node()
+root = Node(value=-1)
 
 # insert some words into the TrieTree
-root.insert("hello")
-root.insert("world")
-root.insert("hey")
-root.insert("hi")
+root.insert("hello",value = root.value + 1)
+root.value +=1
+root.insert("world",value = root.value + 1)
+root.value +=1
+root.insert("hey",value = root.value + 1)
+root.value +=1
+root.insert("hi",value = root.value + 1)
+root.value +=1
+print(root.value)
 
 # search for a word in the TrieTree
-node = root.search("hello")
+node = root.search("hi")
 if node is not None:
     print("Found word 'hello' in TrieTree")
 else:
