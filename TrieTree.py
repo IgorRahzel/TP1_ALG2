@@ -26,7 +26,7 @@ class Node:
                 if i == len(word) - 1:
                     child.value.append(value)
                 else:
-                    child.insert(word, i + 1)
+                    child.insert(word, i + 1,value)
                 return
 
         # if no child node with the same label exists, create a new one and add it to the children list
@@ -35,6 +35,6 @@ class Node:
 
         # if this is the last character of the word, set the value of the node to the word
         if i == len(word) - 1:
-            node.value = word
+            node.value.append(value)
         else:
-            node.insert(word, i + 1)
+            node.insert(word, i + 1,value)
