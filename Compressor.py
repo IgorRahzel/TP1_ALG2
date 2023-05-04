@@ -15,7 +15,7 @@ root.value +=1
 print(root.value)
 
 # search for a word in the TrieTree
-node = root.search("hi")
+node = root.search("h")
 if node is not None:
     print("Found word 'hello' in TrieTree")
 else:

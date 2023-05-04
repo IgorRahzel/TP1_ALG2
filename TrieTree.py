@@ -1,9 +1,9 @@
 class Node:
-    def __init__(self,value=None, label='', children=None, root=None):
+    def __init__(self,value=None, label='', children=None):
         self.value = value if value is not None else []
         self.children = children if children is not None else []
         self.label = label
-        self.root = root
+        
 
     def search(self, word, i=0):
         for child in self.children:
@@ -30,7 +30,7 @@ class Node:
                 return
 
         # if no child node with the same label exists, create a new one and add it to the children list
-        node = Node(label=word[i], root=self.root)
+        node = Node(label=word[i])
         self.children.append(node)
 
         # if this is the last character of the word, set the value of the node to the word
