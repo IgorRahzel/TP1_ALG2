@@ -18,6 +18,8 @@ while i < n:
         while prefix != None:
             if i < len(string) -1 :
                 new_letter = string[i+1] 
+            else:
+                new_letter = '/0'
             if counter == 0:
                 word = prefix + new_letter
             else:
