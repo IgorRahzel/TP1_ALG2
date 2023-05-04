@@ -23,6 +23,7 @@ while i < n:
             else:
                 word += new_letter
             prefix = root.insert(word,value = root.value + 1)
+            counter += 1
             i+=1
         i += 1
         root.value += 1

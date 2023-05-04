@@ -33,8 +33,8 @@ class Node:
                         child.value.append(value)
                         return child.label
                     else:
-                        child.insert(word, i + 1,value)
-                        return None
+                        return child.insert(word, i + 1,value)
+                    
 
         # if no child node with the same label exists, create a new one and add it to the children list
         if len(word) == 1:
