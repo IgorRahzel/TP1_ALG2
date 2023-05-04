@@ -19,22 +19,33 @@ class Node:
                 return None
 
     def insert(self, word, i=0,value=None):
-        # search for a child node with the same label as the current character
-        for child in self.children:
-            if child.label == word[i]:
-                # if this is the last character of the word, set the value of the node to the word
-                if i == len(word) - 1:
-                    child.value.append(value)
-                else:
-                    child.insert(word, i + 1,value)
-                return
+        #checks if word is only a single character
+        if len(word) == 1:
+            for child in self.children:
+                if child.label == word:
+                    return word
+        else:
+            # search for a child node with the same label as the current character
+            for child in self.children:
+                if child.label == word[i]:
+                    # if this is the last character of the word, set the value of the node to the word
+                    if i == len(word) - 1:
+                        child.value.append(value)
+                        return child.label
+                    else:
+                        child.insert(word, i + 1,value)
+                        return None
 
         # if no child node with the same label exists, create a new one and add it to the children list
-        node = Node(label=word[i])
-        self.children.append(node)
+        if len(word) == 1:
+            node = Node(label=word)
+            self.children.append(node)
+        else:
+            node = Node(label=word[i])
+            self.children.append(node)
 
         # if this is the last character of the word, set the value of the node to the word
-        if i == len(word) - 1:
+        if i == len(word) - 1 or len(word) == 1:
             node.value.append(value)
         else:
             node.insert(word, i + 1,value)
