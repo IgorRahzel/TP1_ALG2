@@ -23,8 +23,6 @@ class Node:
         if len(word) == 1:
             for child in self.children:
                 if child.label == word:
-                    with open("myfile.txt", "a") as f:
-                        f.write(str(self.value)+word)
                     return word
         else:
             # search for a child node with the same label as the current character

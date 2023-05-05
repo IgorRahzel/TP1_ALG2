@@ -1,5 +1,6 @@
 from TrieTree import Node
 
+#PARTE DA COMPRESSÃO
 with open("myfile.txt", "w") as f:
     f.write('')
 f.close()
@@ -10,7 +11,7 @@ root = Node(value=0)
 counter = 0
 num_nodes = 0
 
-string = 'sir sid eastman easily teases sea sick seals'
+string = 'ABCDABCABCDAACABCE'
 n = len(string)
 i = 0
 while i < n:
@@ -54,3 +55,14 @@ if node is not None:
     print("Found word 'hello' in TrieTree")
 else:
     print("Word 'hello' not found in TrieTree")
+
+#PARTE DESCOMPRESSÃO
+index = ''
+with open('myfile.txt','r') as f:
+    for char in f.read():
+        if char in '0123456789':
+            index += char
+        
+
+
+
