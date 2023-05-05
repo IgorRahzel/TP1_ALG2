@@ -23,6 +23,8 @@ class Node:
         if len(word) == 1:
             for child in self.children:
                 if child.label == word:
+                    with open("myfile.txt", "a") as f:
+                        f.write(str(self.value)+word)
                     return word
         else:
             # search for a child node with the same label as the current character
@@ -30,6 +32,8 @@ class Node:
                 if child.label == word[i]:
                     # if this is the last character of the word, set the value of the node to the word
                     if i == len(word) - 1:
+                        with open("myfile.txt", "a") as f:
+                            f.write(str(self.value)+child.label)
                         return child.label
                     else:
                         return child.insert(word, i + 1,value)
@@ -46,5 +50,7 @@ class Node:
         # if this is the last character of the word, set the value of the node to the word
         if i == len(word) - 1 or len(word) == 1:
             node.value = value
+            with open("myfile.txt", "a") as f:
+                        f.write(str(self.value)+node.label)
         else:
             node.insert(word, i + 1,value)
