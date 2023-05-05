@@ -1,6 +1,6 @@
 class Node:
     def __init__(self,value=None, label='', children=None):
-        self.value = value if value is not None else []
+        self.value = value if value is not None else None
         self.children = children if children is not None else []
         self.label = label
         
@@ -9,7 +9,7 @@ class Node:
         for child in self.children:
             if child.label == word[i]:
                 if i == len(word) - 1:
-                    if len(child.value) != 0:
+                    if child.value != None:
                         return self
                 else:
                     for child in self.children:
@@ -30,7 +30,6 @@ class Node:
                 if child.label == word[i]:
                     # if this is the last character of the word, set the value of the node to the word
                     if i == len(word) - 1:
-                        child.value.append(value)
                         return child.label
                     else:
                         return child.insert(word, i + 1,value)
@@ -46,6 +45,6 @@ class Node:
 
         # if this is the last character of the word, set the value of the node to the word
         if i == len(word) - 1 or len(word) == 1:
-            node.value.append(value)
+            node.value = value
         else:
             node.insert(word, i + 1,value)

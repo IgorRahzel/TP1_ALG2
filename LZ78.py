@@ -1,7 +1,7 @@
 from TrieTree import Node
 
 # create a new TrieTree object
-root = Node(value=-1)
+root = Node(value=0)
 
 counter = 0
 
@@ -30,7 +30,7 @@ while i < n:
         i += 1
         root.value += 1
 
-
+root.value = 0
 root.search('s')
 # insert some words into the TrieTree
 '''
