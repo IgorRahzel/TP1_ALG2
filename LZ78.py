@@ -1,68 +1,70 @@
 from TrieTree import Node
 
-#PARTE DA COMPRESSÃO
-with open("myfile.txt", "w") as f:
-    f.write('')
-f.close()
+def lz78_compression(string):
 
-# create a new TrieTree object
-root = Node(value=0)
+    with open("myfile.txt", "w") as f:
+        f.write('')
+    f.close()
 
-counter = 0
-num_nodes = 0
+    # create a new TrieTree object
+    root = Node(value=0)
 
-string = 'ABCDABCABCDAABCABCE'
-n = len(string)
-i = 0
-while i < n:
     counter = 0
-    prefix = root.insert(string[i],value = num_nodes + 1)
-    if prefix == None:
-        num_nodes += 1
-        i+=1
-    else:
-        while prefix != None:
-            if i < len(string) -1 :
-                new_letter = string[i+1] 
-            else:
-                new_letter = '\0'
-            if counter == 0:
-                word = prefix + new_letter
-            else:
-                word += new_letter
-            prefix = root.insert(word,value = num_nodes + 1)
-            counter += 1
+    num_nodes = 0
+
+    n = len(string)
+    i = 0
+    while i < n:
+        counter = 0
+        aux = root.insert(string[i],value = num_nodes + 1)
+        if aux == None:
+            num_nodes += 1
             i+=1
-        i += 1
-        num_nodes += 1
+        else:
+            while aux != None:
+                if i < len(string) -1 :
+                    new_letter = string[i+1] 
+                else:
+                    new_letter = '\0'
+                if counter == 0:
+                    word = aux + new_letter
+                else:
+                    word += new_letter
+                aux = root.insert(word,value = num_nodes + 1)
+                counter += 1
+                i+=1
+            i += 1
+            num_nodes += 1
 
+def lz78_decompression(file):
+    dictionary = {0:[0,'']}
+    index = ''
+    seq = ''
+    counter = 0
+    with open(file,'r') as f:
+        for char in f.read():
+            if char.isdigit():
+                index += char
+            else:
+                counter += 1
+                index = int(index)
+                dictionary[counter] = [index,char]
 
-# insert some words into the TrieTree
-'''
-root.insert("hello",value = root.value + 1)
-root.value +=1
-root.insert("world",value = root.value + 1)
-root.value +=1
-root.insert("hey",value = root.value + 1)
-root.value +=1
-root.insert("hi",value = root.value + 1)
-root.value +=1
-print(root.value)
-'''
-# search for a word in the TrieTree
-node = root.search(" ")
-if node is not None:
-    print("Found word 'hello' in TrieTree")
-else:
-    print("Word 'hello' not found in TrieTree")
+                i = index
+                while i != 0:
+                    list = dictionary.get(i)
+                    seq = list[1] + seq
+                    i = list[0]
+                seq += char
+                with open('output_file.txt','a') as f2:
+                    f2.write(seq)
+                    f2.close()
+                index = ''
+                seq = ''
 
-#PARTE DESCOMPRESSÃO
-index = ''
-with open('myfile.txt','r') as f:
-    for char in f.read():
-        if char in '0123456789':
-            index += char
-        
+#PARTE DA COMPRESSÃO
+string = 'ABCDABCABCDAABCABCE'
+lz78_compression(string)
 
-
-
+#PARTE DA DESCOMPRESSÃO
+lz78_decompression('myfile.txt')
