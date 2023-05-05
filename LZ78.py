@@ -11,7 +11,7 @@ root = Node(value=0)
 counter = 0
 num_nodes = 0
 
-string = 'ABCDABCABCDAACABCE'
+string = 'ABCDABCABCDAABCABCE'
 n = len(string)
 i = 0
 while i < n:
