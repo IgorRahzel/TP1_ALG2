@@ -1,3 +1,4 @@
+import numpy as np
 class Node:
     def __init__(self,value=None, label='', children=None):
         self.value = value if value is not None else None
@@ -18,7 +19,7 @@ class Node:
                             return node
                 return None
 
-    def insert(self, word, i=0,value=None):
+    def insert(self, word, i=0,value=None,firstLook = False,bitSize = None):
         #checks if word is only a single character
         if len(word) == 1:
             for child in self.children:
@@ -32,7 +33,7 @@ class Node:
                     if i == len(word) - 1:
                         return child.label
                     else:
-                        return child.insert(word, i + 1,value)
+                        return child.insert(word, i + 1,value,firstLook)
                     
 
         # if no child node with the same label exists, create a new one and add it to the children list
@@ -46,7 +47,9 @@ class Node:
         # if this is the last character of the word, set the value of the node to the word
         if i == len(word) - 1 or len(word) == 1:
             node.value = value
-            with open("myfile.txt", "a") as f:
-                        f.write(str(self.value)+node.label)
+            if firstLook == True:
+                with open("myfile.txt", "a") as f:
+                            code = np.binary_repr(self.value, width=bitSize)
+                            f.write(str(code)+node.label)
         else:
-            node.insert(word, i + 1,value)
+            node.insert(word, i + 1,value,firstLook)
