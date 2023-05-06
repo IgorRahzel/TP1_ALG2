@@ -50,6 +50,9 @@ class Node:
             if firstLook == True:
                 with open("myfile.txt", "a") as f:
                             code = np.binary_repr(self.value, width=bitSize)
-                            f.write(str(code)+node.label)
+                            ascii_value = ord(node.label)
+                            binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
+                            binary_string.zfill(8) 
+                            f.write(str(code) + binary_string)
         else:
             node.insert(word, i + 1,value,firstLook)

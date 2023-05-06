@@ -7,6 +7,10 @@ def lz78_compression(string,firstLook = False,bitsSize = None):
         f.write('')
     f.close()
 
+    if firstLook == True:
+        with open('myfile.txt','w') as f:
+            f.write(f'{bitsSize} 7\n')
+
     # create a new TrieTree object
     root = Node(value=0)
     #auxiliary variable to determine if the number of character is > 0
