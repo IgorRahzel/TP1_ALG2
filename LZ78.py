@@ -9,7 +9,7 @@ def lz78_compression(string,firstLook = False,bitsSize = None):
 
     if firstLook == True:
         with open('myfile.txt','w') as f:
-            f.write(f'{bitsSize} 7\n')
+            f.write(f'{bitsSize} 8\n')
 
     # create a new TrieTree object
     root = Node(value=0)
@@ -55,16 +55,38 @@ def lz78_decompression(file):
 
     index = ''
     seq = ''
+    character = ''
     counter = 0
 
     with open(file,'r') as f:
+        #read first line of the file
+        firstLine = f.readline()
+        tokens = firstLine.split()
+
+        #capture the number of bits used in the codification
+        num_size = int(tokens[0])
+        char_size = int(tokens[1])
+
+        iterations = 0 
+
         for char in f.read():
-            if char.isdigit():
-                index += char
-            else:
+            iterations +=1
+            if iterations <= num_size + char_size:
+                if iterations <= num_size:
+                    index += char
+
+                else:
+                    character += char
+                    
+            if iterations == num_size + char_size:
+                #converting binary code of index to int
+                index = int(index, 2)
+                #converting binary code of the character into char
+                decimal_number = int(character, 2)
+                character = chr(decimal_number)
+
                 counter += 1
-                index = int(index)
-                dictionary[counter] = [index,char]
+                dictionary[counter] = [index,character]
 
                 i = index
 
@@ -74,13 +96,16 @@ def lz78_decompression(file):
                     seq = list[1] + seq
                     i = list[0]
                 #add the current text character to the sequence
-                seq += char
+                seq += character
                 #write sequence in the file
                 with open('output_file.txt','a') as f2:
                     f2.write(seq)
                     f2.close()
                 index = ''
                 seq = ''
+                character = ''
+                
+                iterations = 0
 
 #PARTE DA COMPRESSÃO
 string = 'sir sid eastman easily teases sea sick seals'

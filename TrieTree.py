@@ -33,7 +33,7 @@ class Node:
                     if i == len(word) - 1:
                         return child.label
                     else:
-                        return child.insert(word, i + 1,value,firstLook)
+                        return child.insert(word, i + 1,value,firstLook,bitSize)
                     
 
         # if no child node with the same label exists, create a new one and add it to the children list
@@ -50,9 +50,10 @@ class Node:
             if firstLook == True:
                 with open("myfile.txt", "a") as f:
                             code = np.binary_repr(self.value, width=bitSize)
+                            code = code.zfill(bitSize)
                             ascii_value = ord(node.label)
                             binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
-                            binary_string.zfill(8) 
-                            f.write(str(code) + binary_string)
+                            binary_string = binary_string.zfill(8) 
+                            f.write(str(code)+binary_string)
         else:
-            node.insert(word, i + 1,value,firstLook)
+            node.insert(word, i + 1,value,firstLook,bitSize)
