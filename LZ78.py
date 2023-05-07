@@ -109,7 +109,6 @@ def lz78_decompression(file):
                 iterations = 0
 
 #PARTE DA COMPRESSÃO
-string = 'sir sid eastman easily teases sea sick seals'
 text = 'example.txt'
 num_nodes = lz78_compression(text)
 num_nodes_log_2 = log2(num_nodes)

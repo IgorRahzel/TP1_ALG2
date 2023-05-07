@@ -18,42 +18,51 @@ class Node:
                         if node is not None:
                             return node
                 return None
-
-    def insert(self, word, i=0,value=None,firstLook = False,bitSize = None):
-        #checks if word is only a single character
+    def insert(self, word, i=0, value=None, firstLook=False, bitSize=None):
+        # Checks if word is only a single character
         if len(word) == 1:
             for child in self.children:
                 if child.label == word:
                     return word
-        else:
-            # search for a child node with the same label as the current character
-            for child in self.children:
-                if child.label == word[i]:
-                    # if this is the last character of the word, set the value of the node to the word
-                    if i == len(word) - 1:
-                        return child.label
-                    else:
-                        return child.insert(word, i + 1,value,firstLook,bitSize)
-                    
 
-        # if no child node with the same label exists, create a new one and add it to the children list
-        if len(word) == 1:
-            node = Node(label=word)
-            self.children.append(node)
-        else:
-            node = Node(label=word[i])
-            self.children.append(node)
+        current_node = self
 
-        # if this is the last character of the word, set the value of the node to the word
-        if i == len(word) - 1 or len(word) == 1:
-            node.value = value
-            if firstLook == True:
-                with open("myfile.txt", "a") as f:
-                            code = np.binary_repr(self.value, width=bitSize)
-                            code = code.zfill(bitSize)
-                            ascii_value = ord(node.label)
-                            binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
-                            binary_string = binary_string.zfill(8) 
-                            f.write(str(code)+binary_string)
-        else:
-            node.insert(word, i + 1,value,firstLook,bitSize)
+        while i < len(word):
+            current_char = word[i]
+
+            # Search for a child node with the same label as the current character
+            child_node = None
+            for child in current_node.children:
+                if child.label == current_char:
+                    child_node = child
+                    break
+
+            # If a child node exists, move to that node
+            if child_node is not None:
+                current_node = child_node
+                i += 1
+                if i == len(word):
+                    return current_node.label
+            else:
+                break
+
+        # Create new nodes for the remaining characters in the word
+        while i < len(word):
+            new_node = Node(label=word[i])
+            current_node.children.append(new_node)
+            parent_value = current_node.value
+            current_node = new_node
+            i += 1
+
+        # Set the value of the last node to the word
+        current_node.value = value
+
+        # Write the binary representation to the file if firstLook is True
+        if firstLook:
+            with open("myfile.txt", "a") as f:
+                code = np.binary_repr(parent_value, width=bitSize)
+                code = code.zfill(bitSize)
+                ascii_value = ord(current_node.label)
+                binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
+                binary_string = binary_string.zfill(8)
+                f.write(str(code) + binary_string)
