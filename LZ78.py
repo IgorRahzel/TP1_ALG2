@@ -113,7 +113,7 @@ def lz78_decompression(file):
                 iterations = 0
 
 #PARTE DA COMPRESSÃO
-text = 'example.txt'
+text = 'os_lusiadas.txt'
 num_nodes = lz78_compression(text)
 num_nodes_log_2 = log2(num_nodes)
 num_nodes_log_2 = ceil(num_nodes_log_2)
