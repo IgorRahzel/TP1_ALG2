@@ -22,6 +22,7 @@ def lz78_compression(text,firstLook = False,bitsSize = None):
             n = len(line)
             i = 0
             while i < n:
+                endOfLine = False
                 counter = 0
                 aux = root.insert(line[i],value = num_nodes + 1, firstLook = firstLook,bitSize = bitsSize)
                 #character wasn't a child of the root node
@@ -32,16 +33,19 @@ def lz78_compression(text,firstLook = False,bitsSize = None):
                 else:
                     while aux != None:
                         if i < len(line) -1 :
-                            new_letter = line[i+1] 
+                            new_letter = line[i+1]
                         else:
                             new_letter = '\0'
+                        if new_letter == '\x00':
+                            endOfLine = True
                         #current charater and next
-                        if counter == 0:
-                            word = aux + new_letter
-                        #multiple characters
                         else:
-                            word += new_letter
-                        aux = root.insert(word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize)
+                            if counter == 0:
+                                word = aux + new_letter
+                            #multiple characters
+                            else:
+                                word += new_letter
+                        aux = root.insert(word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize,endOfLine=endOfLine)
                         counter += 1
                         i+=1
                     i += 1

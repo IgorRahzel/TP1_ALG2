@@ -18,7 +18,7 @@ class Node:
                         if node is not None:
                             return node
                 return None
-    def insert(self, word, i=0, value=None, firstLook=False, bitSize=None):
+    def insert(self, word, i=0, value=None, firstLook=False, bitSize=None,endOfLine=False):
         # Checks if word is only a single character
         if len(word) == 1:
             for child in self.children:
@@ -39,10 +39,25 @@ class Node:
 
             # If a child node exists, move to that node
             if child_node is not None:
+                parent_value = current_node.value
                 current_node = child_node
                 i += 1
+
                 if i == len(word):
-                    return current_node.label
+
+                    if endOfLine == False:
+                        return current_node.label
+                    
+                    elif endOfLine == True and firstLook == True:
+                        with open("myfile.txt", "a") as f:
+                            code = np.binary_repr(parent_value, width=bitSize)
+                            code = code.zfill(bitSize)
+                            ascii_value = ord(current_node.label)
+                            binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
+                            binary_string = binary_string.zfill(8)
+                            f.write(str(code) + binary_string)
+                            return
+
             else:
                 break
 
