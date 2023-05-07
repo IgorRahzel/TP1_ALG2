@@ -81,3 +81,18 @@ class Node:
                 binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
                 binary_string = binary_string.zfill(8)
                 f.write(str(code) + binary_string)
+
+    def skip_line(self,bitSize):
+        for child in self.children:
+            if child.label == '\n':
+                with open("myfile.txt", "a") as f:
+                            code = np.binary_repr(self.value, width=bitSize)
+                            code = code.zfill(bitSize)
+                            ascii_value = ord(child.label)
+                            binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
+                            binary_string = binary_string.zfill(8)
+                            f.write(str(code) + binary_string)
+                return True
+        
+        return False
+        

@@ -21,36 +21,41 @@ def lz78_compression(text,firstLook = False,bitsSize = None):
         for line in file:
             n = len(line)
             i = 0
-            while i < n:
-                endOfLine = False
-                counter = 0
-                aux = root.insert(line[i],value = num_nodes + 1, firstLook = firstLook,bitSize = bitsSize)
-                #character wasn't a child of the root node
-                if aux == None:
-                    num_nodes += 1
-                    i+=1
-                #character was a child of the root node
-                else:
-                    while aux != None:
-                        if i < len(line) -1 :
-                            new_letter = line[i+1]
-                        else:
-                            new_letter = '\0'
-                        if new_letter == '\x00':
-                            endOfLine = True
-                        #current charater and next
-                        else:
-                            if counter == 0:
-                                word = aux + new_letter
-                            #multiple characters
-                            else:
-                                word += new_letter
-                        aux = root.insert(word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize,endOfLine=endOfLine)
-                        counter += 1
+            skip = False
+            #if line == '\n' and firstLook == True:
+                #skip = root.skip_line(bitSize=bitsSize)
+                #print('Space')
+            if skip == False:
+                while i < n:
+                    endOfLine = False
+                    counter = 0
+                    aux = root.insert(line[i],value = num_nodes + 1, firstLook = firstLook,bitSize = bitsSize)
+                    #character wasn't a child of the root node
+                    if aux == None:
+                        num_nodes += 1
                         i+=1
-                    i += 1
-                    num_nodes += 1
-            
+                    #character was a child of the root node
+                    else:
+                        while aux != None:
+                            if i < len(line) -1 :
+                                new_letter = line[i+1]
+                            else:
+                                new_letter = '\0'
+                            if new_letter == '\x00':
+                                endOfLine = True
+                            #current charater and next
+                            else:
+                                if counter == 0:
+                                    word = aux + new_letter
+                                #multiple characters
+                                else:
+                                    word += new_letter
+                            aux = root.insert(word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize,endOfLine=endOfLine)
+                            counter += 1
+                            i+=1
+                        i += 1
+                        num_nodes += 1
+                
     if firstLook == False:
         return num_nodes
 
@@ -113,7 +118,7 @@ def lz78_decompression(file):
                 iterations = 0
 
 #PARTE DA COMPRESSÃO
-text = 'os_lusiadas.txt'
+text = 'dom_casmurro.txt'
 num_nodes = lz78_compression(text)
 num_nodes_log_2 = log2(num_nodes)
 num_nodes_log_2 = ceil(num_nodes_log_2)
