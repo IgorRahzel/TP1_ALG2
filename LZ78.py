@@ -1,14 +1,15 @@
 from TrieTree import Node
 from math import log2,ceil
+import sys
 
-def lz78_compression(text,firstLook = False,bitsSize = None):
+def lz78_compression(text,compressed_file,firstLook = False,bitsSize = None):
 
-    with open("myfile.txt", "w") as f:
+    with open(compressed_file, "w") as f:
         f.write('')
     f.close()
 
     if firstLook == True:
-        with open('myfile.txt','wb') as f:
+        with open(compressed_file,'wb') as f:
             bit_size_bytes = bitsSize.to_bytes(1, byteorder='big',signed=False)
             # Write the bit_size of integers in binary
             f.write(bit_size_bytes)
@@ -26,7 +27,7 @@ def lz78_compression(text,firstLook = False,bitsSize = None):
         i = 0
         while i < n:
             counter = 0
-            aux = root.insert(input[i],value = num_nodes + 1, firstLook = firstLook,bitSize = bitsSize)
+            aux = root.insert(compressed_file,input[i],value = num_nodes + 1, firstLook = firstLook,bitSize = bitsSize)
             #character wasn't a child of the root node
             if aux == None:
                 num_nodes += 1
@@ -42,7 +43,7 @@ def lz78_compression(text,firstLook = False,bitsSize = None):
                     #multiple characters
                     else:
                         word += new_letter
-                    aux = root.insert(word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize)
+                    aux = root.insert(compressed_file,word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize)
                     counter += 1
                     i+=1
                 i += 1
@@ -51,7 +52,7 @@ def lz78_compression(text,firstLook = False,bitsSize = None):
     if firstLook == False:
         return num_nodes
 
-def lz78_decompression(file):
+def lz78_decompression(compressed_file,decompressed_file):
     #create dictiory containg them empty string
     dictionary = {0:[None,'']}
 
@@ -60,11 +61,9 @@ def lz78_decompression(file):
     character = ''
     counter = 0
 
-    with open(file,'rb') as f:
+    with open(compressed_file,'rb') as f:
         # Read the first two bytes and interpret as an integer (big-endian)
         num_size = int.from_bytes(f.read(1), 'big')
-
-        iterations = 0 
 
         while True:
             #Reading the index part of the codification
@@ -99,22 +98,45 @@ def lz78_decompression(file):
             #add the current text character to the sequence
             seq += character
             #write sequence in the file
-            with open('output_file.txt','a') as f2:
+            with open(decompressed_file,'a') as f2:
                 f2.write(seq)
                 f2.close()
             index = ''
             seq = ''
             character = ''
-            
 
-#PARTE DA COMPRESSÃO
-text = 'os_lusiadas.txt'
-num_nodes = lz78_compression(text)
-num_nodes_log_2 = log2(num_nodes)
-num_nodes_log_2 = ceil(num_nodes_log_2)
-bit_size_bytes = (num_nodes_log_2 + 7)//8
-print(num_nodes_log_2)
-lz78_compression(text,firstLook=True,bitsSize = bit_size_bytes)
+def file_extension(file_name, new_extension):
+    # Split the file name and extension
+    base_name, old_extension = file_name.rsplit('.', 1)
 
-#PARTE DA DESCOMPRESSÃO
-lz78_decompression('myfile.txt')
+    # Create the new file name with the desired extension
+    new_file_name = base_name + '.' + new_extension
+
+    return new_file_name
+
+#compression
+if sys.argv[1] == '-c':
+
+    if len(sys.argv) == 3:
+        compressed_file = file_extension(sys.argv[2],'lz78')
+    else:
+        compressed_file = sys.argv[4]
+    
+    
+    text = sys.argv[2]
+    num_nodes = lz78_compression(text,compressed_file)
+    num_nodes_log_2 = log2(num_nodes)
+    num_nodes_log_2 = ceil(num_nodes_log_2)
+    bit_size_bytes = (num_nodes_log_2 + 7)//8
+    print(num_nodes_log_2)
+    lz78_compression(text,compressed_file,firstLook=True,bitsSize = bit_size_bytes)
+
+#decompression
+elif sys.argv[1] == '-x':
+    if len(sys.argv) == 3:
+        decompressed_file = file_extension(sys.argv[2],'txt')
+    else:
+        decompressed_file = sys.argv[4]
+    text = sys.argv[2]
+    #PARTE DA DESCOMPRESSÃO
+    lz78_decompression(text,decompressed_file)

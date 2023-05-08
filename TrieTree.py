@@ -18,7 +18,7 @@ class Node:
                         if node is not None:
                             return node
                 return None
-    def insert(self, word, i=0, value=None, firstLook=False, bitSize=None,endOfLine=False):
+    def insert(self,file,word, i=0, value=None, firstLook=False, bitSize=None):
         # Checks if word is only a single character
         if len(word) == 1:
             for child in self.children:
@@ -61,7 +61,7 @@ class Node:
 
         # Write the binary representation to the file if firstLook is True
         if firstLook:
-            with open("myfile.txt", "ab") as f:
+            with open(file, "ab") as f:
                 # Convert parent_value to binary representation
                 parent_value_bytes = parent_value.to_bytes(bitSize, byteorder='big',signed = False)
                 # Convert current_node.label to binary representation
