@@ -44,20 +44,7 @@ class Node:
                 i += 1
 
                 if i == len(word):
-
-                    if endOfLine == False:
-                        return current_node.label
-                    
-                    elif endOfLine == True and firstLook == True:
-                        with open("myfile.txt", "a") as f:
-                            code = np.binary_repr(parent_value, width=bitSize)
-                            code = code.zfill(bitSize)
-                            ascii_value = ord(current_node.label)
-                            binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
-                            binary_string = binary_string.zfill(8)
-                            f.write(str(code) + binary_string)
-                            return
-
+                    return current_node.label
             else:
                 break
 
