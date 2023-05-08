@@ -74,10 +74,10 @@ class Node:
 
         # Write the binary representation to the file if firstLook is True
         if firstLook:
-            with open("myfile.txt", "a") as f:
-                code = np.binary_repr(parent_value, width=bitSize)
-                code = code.zfill(bitSize)
-                ascii_value = ord(current_node.label)
-                binary_string = bin(ascii_value)[2:]  # Convert to binary string, removing the '0b' prefix
-                binary_string = binary_string.zfill(8)
-                f.write(str(code) + binary_string)
+            with open("myfile.txt", "ab") as f:
+                # Convert parent_value to binary representation
+                parent_value_bytes = parent_value.to_bytes(bitSize, byteorder='big',signed = False)
+                # Convert current_node.label to binary representation
+                label_byte = current_node.label.encode('utf-8','strict')
+
+                f.write(parent_value_bytes + label_byte)
