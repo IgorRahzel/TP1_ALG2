@@ -128,7 +128,6 @@ if sys.argv[1] == '-c':
     num_nodes_log_2 = log2(num_nodes)
     num_nodes_log_2 = ceil(num_nodes_log_2)
     bit_size_bytes = (num_nodes_log_2 + 7)//8
-    print(num_nodes_log_2)
     lz78_compression(text,compressed_file,firstLook=True,bitsSize = bit_size_bytes)
 
 #decompression
