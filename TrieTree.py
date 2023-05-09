@@ -5,26 +5,7 @@ class Node:
         self.children = children if children is not None else []
         self.label = label
         
-
-    def search(self, word, i=0):
-        for child in self.children:
-            if child.label == word[i]:
-                if i == len(word) - 1:
-                    if child.value != None:
-                        return self
-                else:
-                    for child in self.children:
-                        node = child.search(word, i + 1)
-                        if node is not None:
-                            return node
-                return None
     def insert(self,file,word, i=0, value=None, firstLook=False, bitSize=None):
-        # Checks if word is only a single character
-        if len(word) == 1:
-            for child in self.children:
-                if child.label == word:
-                    return word
-
         current_node = self
 
         while i < len(word):
