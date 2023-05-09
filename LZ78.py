@@ -3,12 +3,13 @@ from math import log2,ceil
 import sys
 
 def lz78_compression(text,compressed_file,firstLook = False,bitsSize = None):
-
+    #make sure that compressed_file is empty
     with open(compressed_file, "w") as f:
         f.write('')
     f.close()
 
     if firstLook == True:
+        #write the number of bytes to the compressed_file
         with open(compressed_file,'wb') as f:
             bit_size_bytes = bitsSize.to_bytes(1, byteorder='big',signed=False)
             # Write the bit_size of integers in binary
@@ -27,20 +28,19 @@ def lz78_compression(text,compressed_file,firstLook = False,bitsSize = None):
         i = 0
         while i < n:
             counter = 0
+            #inserting single character
             aux = root.insert(compressed_file,input[i],value = num_nodes + 1, firstLook = firstLook,bitSize = bitsSize)
-            #character wasn't a child of the root node
             if aux == None:
                 num_nodes += 1
                 i+=1
-            #character was a child of the root node
+            #character was already in the trie
             else:
+                #keeps appending characters to the previous sequence, while it is already in the trie
                 while aux != None:
                     if i < len(input) -1 :
                         new_letter = input[i+1]
-                    #current charater and next
                     if counter == 0:
                         word = aux + new_letter
-                    #multiple characters
                     else:
                         word += new_letter
                     aux = root.insert(compressed_file,word,value = num_nodes + 1,firstLook = firstLook, bitSize = bitsSize)
@@ -69,13 +69,13 @@ def lz78_decompression(compressed_file,decompressed_file):
             #Reading the index part of the codification
             index = int.from_bytes(f.read(num_size),'big')
             character = f.read(1)
-
+            #There are no more codes
             if index == b'' or character ==b'':
                 break
 
             aux_decode = ord(character)
             aux_decode = bin(aux_decode)[2:].rjust(8,'0')
-
+            #Reading characters in the utf-8 format
             if aux_decode[0:3] == '110':
                 character += f.read(1)
             elif aux_decode[0:4] == '1110':
@@ -86,6 +86,7 @@ def lz78_decompression(compressed_file,decompressed_file):
             character = character.decode('utf-8')
 
             counter += 1
+            #inserting code in the dictionary
             dictionary[counter] = [index,character]
 
             i = index
@@ -137,5 +138,4 @@ elif sys.argv[1] == '-x':
     else:
         decompressed_file = sys.argv[4]
     text = sys.argv[2]
-    #PARTE DA DESCOMPRESSÃO
     lz78_decompression(text,decompressed_file)
